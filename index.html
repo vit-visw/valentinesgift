@@ -1,0 +1,525 @@
+l<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To My Forever | Valentine's 2026</title>
+    <style>
+        /* CSS Variables for Easy Customization */
+        :root {
+            --bg-dark: #0a0505;
+            --accent-red: #ff2e63;
+            --deep-rose: #880d1e;
+            --glass: rgba(255, 255, 255, 0.05);
+            --text-gold: #f9d423;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: white;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Animated Background */
+        #canvas-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            background: linear-gradient(to right, #fff, var(--accent-red));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1.5s forwards;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #ccc;
+            letter-spacing: 2px;
+            animation: fadeInUp 1.5s 0.5s forwards;
+            opacity: 0;
+        }
+
+        /* Glassmorphism Card */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .card {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            padding: 40px;
+            margin: 50px 0;
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Interactive Elements */
+        .btn-surprise {
+            background: linear-gradient(45deg, var(--deep-rose), var(--accent-red));
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(255, 46, 99, 0.3);
+            transition: 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+        .btn-surprise:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px rgba(255, 46, 99, 0.5);
+        }
+
+        /* Timeline Section */
+        .timeline {
+            border-left: 2px solid var(--accent-red);
+            padding-left: 20px;
+            margin-left: 10px;
+        }
+
+        .timeline-item {
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '❤';
+            position: absolute;
+            left: -29px;
+            background: var(--bg-dark);
+            color: var(--accent-red);
+            padding: 2px;
+        }
+
+        /* Vintage Paper Texture Overlay */
+        #secret-message {
+            background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            font-size: 20px;
+        }
+
+        /* The Envelope & Wax Seal */
+        .envelope-wrapper {
+            display: flex;
+            justify-content: center;
+            padding: 60px 0;
+        }
+
+        .envelope {
+            min-width: 300px;
+            height: 200px;
+            background: #f4e4bc;
+            /* Old paper color */
+            position: relative;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            transition: 0.5s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            transition: all 0.5s ease-in-out;
+            cursor: pointer;
+        }
+
+        .wax-seal {
+            width: 60px;
+            height: 60px;
+            background: #880d1e;
+            border-radius: 50%;
+            position: absolute;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+            font-size: 20px;
+            color: var(--text-gold);
+            transition: transform 0.5s;
+        }
+
+        .envelope:hover .wax-seal {
+            transform: scale(1.1) rotate(10deg);
+        }
+
+        /* Flower Petals */
+        .petal {
+            position: fixed;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        /* Floating Flower Styles */
+        .flower-icon {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0.3;
+            filter: blur(1px);
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .card {
+                padding: 25px;
+            }
+
+            .hero h1 {
+                font-size: 3rem;
+            }
+
+            #secret-message {
+                font-size: 17px;
+            }
+        }
+
+        .neon-cursive {
+            font-family: cursive;
+            font-size: 2.5rem;
+            color: #fff;
+            /* Neon Glow Effect */
+            text-shadow:
+                0 0 1px #fff,
+                0 0 10px #fff,
+                0 0 10px var(--accent-red),
+                0 0 20px var(--accent-red),
+                0 0 20px var(--accent-red);
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+
+<body>
+
+    <canvas id="canvas-bg"></canvas>
+
+    <section class="hero">
+        <h1>Hey Anjali,</h1>
+        <p>YOU ARE MY UNIVERSE 🌍</p>
+        <a href="#message" class="btn-surprise">Open Our Story</a>
+    </section>
+
+    <div class="container" id="message">
+        <div class="card">
+            <h2 style="color: var(--accent-red); margin-bottom: 15px;">Why You?</h2>
+            <p style="line-height: 1.6; color: #ddd;">
+                In a world full of noise, you are my favorite melody. Every moment spent with you
+                feels like a frame from a beautiful movie I never want to end.<br>
+                If my life is like a book, then you are the most beautiful chapter.
+            </p>
+        </div>
+
+        <div class="card">
+            <h2>A <span style="color: var(--accent-red);">VISWANJALI</span> Story</h2>
+            <p style="margin-bottom: 15px; font-size:20px;font-weight:bold;">Our Highlights</p>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h4 style="color: var(--accent-red);">The Spark ⚡</h4>
+                    <p style="font-size: 0.95rem; color: #fff; margin-top: 5px;">Introduction — June 23, 2023</p>
+                    <p style="font-size: 0.8rem; color: #aaa; font-style: italic;">The day the universe decided we
+                        should meet.</p>
+                </div>
+
+                <div class="timeline-item">
+                    <h4 style="color: var(--text-gold);">The First Glimpse 👀</h4>
+                    <p style="font-size: 0.95rem; color: #fff; margin-top: 5px;">First Meet — July 3, 2023</p>
+                    <p style="font-size: 0.8rem; color: #aaa; font-style: italic;">Finally seeing the person who would
+                        change my life.</p>
+                </div>
+
+                <div class="timeline-item">
+                    <h4 style="color: var(--text-gold);">A Day of Firsts 🥗📸</h4>
+                    <p style="font-size: 0.95rem; color: #fff; margin-top: 5px;">July 22, 2023</p>
+                    <p style="font-size: 0.85rem; color: #ddd;">First Lunch Together 🍝 & Our Very First Selfie 🤳</p>
+                    <p style="font-size: 0.8rem; color: #aaa; font-style: italic;">Capturing memories and flavors we'll
+                        never forget.</p>
+                </div>
+
+                <div class="timeline-item">
+                    <h4 style="color: var(--accent-red);">The Big 'Yes' 💍♾️</h4>
+                    <p style="font-size: 0.95rem; color: #fff; margin-top: 5px;">The Proposal — Aug 12, 2023</p>
+                    <p style="font-size: 0.8rem; color: #aaa; font-style: italic;">When "Me" and "You" officially became
+                        "Us".</p>
+                </div>
+
+                <div class="timeline-item">
+                    <h4 style="color: var(--text-gold);">Romance in the Air 🏞️✨</h4>
+                    <p style="font-size: 0.95rem; color: #fff; margin-top: 5px;">The First Date — Nov 9, 2023</p>
+                    <p style="font-size: 0.8rem; color: #aaa; font-style: italic;">Butterflies, laughter, and a night
+                        auto ride to remember.</p>
+                </div>
+
+                <div class="timeline-item">
+                    <h4 style="color: var(--text-gold);">Salty Air & Sunsets 🌊</h4>
+                    <p style="font-size: 0.95rem; color: #fff; margin-top: 5px;">The Beach Date — Aug 2, 2024</p>
+                    <p style="font-size: 0.8rem; color: #aaa; font-style: italic;">Sand in our toes and love in our
+                        hearts.</p>
+                </div>
+
+                <div class="timeline-item">
+                    <h4 style="color: var(--text-gold);">Wanderlust 🚂🌐</h4>
+                    <p style="font-size: 0.95rem; color: #fff; margin-top: 5px;">First Trip — Sep 3, 2024</p>
+                    <p style="font-size: 0.8rem; color: #aaa; font-style: italic;">Exploring the world of bangalore, one
+                        step at a time, with you.</p>
+                </div>
+
+                <div class="timeline-item">
+                    <h4 style="color: var(--text-gold);">Wind in our Hair 🏍️</h4>
+                    <p style="font-size: 0.95rem; color: #fff; margin-top: 5px;">First Bike Ride — March 23, 2025</p>
+                    <p style="font-size: 0.8rem; color: #aaa; font-style: italic;">Holding onto you while the world
+                        rushed by.</p>
+                </div>
+
+                <div class="timeline-item">
+                    <h4 style="color: var(--text-gold);">City Views 🏙️</h4>
+                    <p style="font-size: 0.95rem; color: #fff; margin-top: 5px;">First City Date — May 18, 2025</p>
+                    <p style="font-size: 0.8rem; color: #aaa; font-style: italic;">Lost in the Hyderbad, but found in
+                        your eyes.</p>
+                </div>
+
+                <div class="timeline-item">
+                    <h4 style="color: var(--text-gold);">Timeless Moments - City nights ️🌆⏳</h4>
+                    <p style="font-size: 0.95rem; color: #fff; margin-top: 5px;">The First Long Date — October 2025</p>
+                    <p style="font-size: 0.8rem; color: #aaa; font-style: italic;">A day where time stood still just for
+                        us.</p>
+                </div>
+
+                <div class="timeline-item">
+                    <h4 style="color: var(--accent-red);">To Be Continued... ❤️</h4>
+                    <p style="font-size: 0.8rem; color: #aaa; font-style: italic;">The best chapters are yet to be
+                        written.</p>
+                </div>
+            </div>
+        </div>
+
+        <h2 style="text-align:center; color: var(--text-gold); margin-top: 60px; font-style: italic;">A Special note for
+            you...</h2>
+        <div class="envelope-wrapper">
+            <div class="envelope" onclick="openSecretLetter()">
+                <div class="wax-seal" id="seal">❤</div>
+                <div id="secret-message"
+                    style="display:none; padding: 20px; color: #433; font-family: 'Courier New', Courier, monospace; font-weight: bold; text-align:center;">
+                    My Dear Anjali, 💌
+                    Every day I can't believe how lucky I am—amongst trillions and trillions of stars ✨, over billions
+                    of years to be alive and to get to spend this life with you. 🌏💫
+                    I love you so much, Amma, more than all the time and space in the universe. 🌌♾️ I can't wait to
+                    spend all the time in the world to share that love with you. ⏳❤️
+                    Happy Valentine's Day, my sweetheart! 🌹💖✨
+                </div>
+            </div>
+        </div>
+
+        <div class="flower-icon" style="top: 20%; left: 5%;">🌸</div>
+        <div class="flower-icon" style="top: 60%; right: 8%;">🌿</div>
+        <div class="flower-icon" style="bottom: 10%; left: 10%;">🌷</div>
+
+        <div class="card" style="text-align: center;">
+            <h3 id="surprise-text">Do you know how much I love you?</h3>
+            <button class="btn-surprise" onclick="revealLove()">Click to find out</button>
+        </div>
+
+        <div class="card" style="text-align: center;">
+            <h1 class="neon-cursive">Happy Valentine's Day</h1>
+        </div>
+    </div>
+    </div>
+
+    <script>
+        // Floating Hearts Background
+        const canvas = document.getElementById('canvas-bg');
+        const ctx = canvas.getContext('2d');
+        let hearts = [];
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Heart {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = canvas.height + 20;
+                this.size = Math.random() * 15 + 5;
+                this.speed = Math.random() * 2 + 1;
+                this.opacity = Math.random() * 0.5 + 0.2;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(255, 46, 99, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.y);
+                ctx.bezierCurveTo(this.x - this.size / 2, this.y - this.size / 2, this.x - this.size, this.y + this.size / 3, this.x, this.y + this.size);
+                ctx.bezierCurveTo(this.x + this.size, this.y + this.size / 3, this.x + this.size / 2, this.y - this.size / 2, this.x, this.y);
+                ctx.fill();
+            }
+            update() {
+                this.y -= this.speed;
+                if (this.y < -20) this.reset();
+            }
+        }
+
+        function init() {
+            for (let i = 0; i < 50; i++) hearts.push(new Heart());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            hearts.forEach(h => {
+                h.update();
+                h.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+
+        init();
+        animate();
+
+        // Surprise Button Logic
+        function revealLove() {
+            const text = document.getElementById('surprise-text');
+            text.innerHTML = "To infinity and beyond! ❤️";
+            text.style.color = "#f9d423";
+            confettiEffect();
+        }
+
+        function confettiEffect() {
+            // Simple visual cue that something happened
+            document.body.style.backgroundColor = "#1a0808";
+            setTimeout(() => {
+                document.body.style.backgroundColor = "#0a0505";
+            }, 500);
+        }
+
+        let isOpen = false; // Track the state
+        const originalText = document.getElementById('secret-message').innerHTML; // Store the text
+
+        function openSecretLetter() {
+            const seal = document.getElementById('seal');
+            const message = document.getElementById('secret-message');
+            const envelope = document.querySelector('.envelope');
+
+            if (!isOpen) {
+                // --- OPENING THE LETTER ---
+                seal.style.transform = "translateY(-100px) scale(0)";
+                seal.style.opacity = "0";
+
+                setTimeout(() => {
+                    envelope.style.background = "#fff";
+                    envelope.style.height = "auto";
+                    envelope.style.padding = "25px";
+                    message.style.display = "block";
+
+                    // Typewriter effect
+                    message.innerHTML = "";
+                    let i = 0;
+                    const timer = setInterval(() => {
+                        if (i < originalText.length) {
+                            message.innerHTML += originalText.charAt(i);
+                            i++;
+                        } else {
+                            clearInterval(timer);
+                        }
+                    }, 30);
+                    isOpen = true;
+                }, 500);
+
+            } else {
+                // --- CLOSING THE LETTER ---
+                message.style.display = "none";
+                envelope.style.background = ""; // Returns to CSS default (vintage color)
+                envelope.style.height = "";     // Returns to CSS default
+                envelope.style.padding = "";    // Returns to CSS default
+
+                setTimeout(() => {
+                    seal.style.transform = "translateY(0) scale(1)";
+                    seal.style.opacity = "1";
+                    isOpen = false;
+                }, 300);
+            }
+        }
+
+        // Falling Petals Effect
+        function createPetal() {
+            const petal = document.createElement('div');
+            const icons = ['🌸', '💮', '🍃', '❤'];
+            petal.innerHTML = icons[Math.floor(Math.random() * icons.length)];
+            petal.classList.add('petal');
+            petal.style.left = Math.random() * 100 + 'vw';
+            petal.style.animationDuration = Math.random() * 3 + 2 + 's';
+            petal.style.opacity = Math.random();
+            petal.style.fontSize = Math.random() * 10 + 15 + 'px';
+
+            document.body.appendChild(petal);
+
+            const animation = petal.animate([{
+                transform: 'translateY(-10vh) rotate(0deg)'
+            },
+            {
+                transform: `translateY(110vh) rotate(${Math.random() * 360}deg)`
+            }
+            ], {
+                duration: Math.random() * 3000 + 5000,
+                easing: 'linear'
+            });
+
+            animation.onfinish = () => petal.remove();
+        }
+
+        // Spawn petals every 800ms
+        setInterval(createPetal, 800);
+    </script>
+</body>
+
+</html>
